@@ -27,4 +27,4 @@ To run the repository follow the steps:
 
 The Document Clusters can be visualized as
 
-![Document_Visualization](https://github.com/AdityaSadana/Topic-Modeling-using-LDA/Visualization_plot.png)
+![Document_Visualization](https://github.com/AdityaSadana/Topic-Modeling-using-LDA/blob/main/Visualization_plot.png)
