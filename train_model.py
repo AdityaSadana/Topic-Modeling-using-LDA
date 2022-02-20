@@ -15,6 +15,7 @@ nltk.download('wordnet')
 lemmatizer=WordNetLemmatizer()
 stopwords=set(stopwords.words("english"))
 
+# Extracting Text
 def to_string_utf8(document):
     return document.decode('utf-8')
 
@@ -25,6 +26,7 @@ def get_doc_data(filepath):
     document = re.sub('[ \t\n]+', ' ', document)
     return document
 
+# Cleaning Text
 def clean(text):
     words=text.lower().split(" ")
     cleaned_text=""
@@ -34,6 +36,7 @@ def clean(text):
 
     return cleaned_text
 
+# Saving the texts of all documents in an array
 documents=[]
 path="data/"
 for doc in os.listdir(path):
@@ -42,22 +45,25 @@ for doc in os.listdir(path):
             documents.append([doc,clean(get_doc_data(os.path.join(path, doc)))])
         except: pass
 
+# Building Model
 documents=np.array(documents)
 model=ktrain.text.get_topic_model(documents[:,1])
 model.build(documents[:,1], threshold=0.25)
 model.print_topics(show_counts=True)
 
+# Saving Model
 file=open("Topic_Recognizer.pkl","wb")
 pickle.dump(model,file)
 print("MODEL SAVED")
 
 print("Saving Metdata...")
+# Saving files that would be required for prediction
 topic_to_document=defaultdict(list)
 topics=model.get_topics()
 for i in documents:
     pred=model.predict([i[1]])[0]
     for ind in range(len(pred)):
-        if pred[ind]>=0.25:
+        if pred[ind]>=0.25: # 0.25 is threshold value of similarity
             topic_to_document[ind].append(i[0])
 
 file=open("topics.pkl","wb")
