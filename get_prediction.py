@@ -11,6 +11,7 @@ model=pickle.load(open("Topic_Recognizer.pkl","rb"))
 topic_to_document=pickle.load(open("topic_to_document.pkl","rb"))
 topics=pickle.load(open("Topics.pkl","rb"))
 
+# print(topic_to_document)
 text=input("Enter text: ")
 
 def clean(text):
@@ -22,6 +23,8 @@ def clean(text):
 
     return cleaned_text
 
-pred=np.argmax(model.predict([clean(text)]))
-print("Topic ->",topics[pred])
-print("Similar Documents ->",topic_to_document[pred])
+pred=np.array(model.predict([clean(text)])[0])
+for ind in range(len(pred)):
+    if pred[ind]>=0.25:
+        print("Topic ->",topics[ind])
+        print("Similar Documents ->",topic_to_document[ind])

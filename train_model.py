@@ -55,8 +55,10 @@ print("Saving Metdata...")
 topic_to_document=defaultdict(list)
 topics=model.get_topics()
 for i in documents:
-    pred=model.predict([i[1]])
-    topic_to_document[np.argmax(pred)].append(i[0])
+    pred=model.predict([i[1]])[0]
+    for ind in range(len(pred)):
+        if pred[ind]>=0.25:
+            topic_to_document[ind].append(i[0])
 
 file=open("topics.pkl","wb")
 pickle.dump(topics, file)
